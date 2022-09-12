@@ -1,0 +1,6 @@
+{
+    "sample_script"  : "/usr/bin/python3 ./tool/sample.py",
+    "exec_ls": "ls",
+    "exec_du": "du -h",
+    "echo_DISPLAY": "bash ./tool/sample.sh"
+}
