@@ -1,0 +1,6 @@
+{
+    "sample_script1": "/usr/bin/python3 ./tool/sample.py",
+    "sample_script2": "ls",
+    "sample_script3": "du -h",
+    "sample_script4": "bash ./tool/sample.sh"
+}

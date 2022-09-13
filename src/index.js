@@ -10,16 +10,16 @@ const fs = require("fs");
 
 console.log(process.cwd()); // 実行したフォルダ場所
 console.log(__dirname);     // index.htmlが入っているフォルダ場所
-const json_file_path = "./src/config.json";
+const json_file_path = "./setting/config.json";
 let process_state = 0;
 
 let mainWindow = null;
 app.on('ready', () => {
   let win_option = {
-    width    : 1200,
-    height   : 800,
-    minWidth : 1200,
-    minHeight:  800,
+    width    : 550,
+    height   : 500,
+    minWidth :  400,
+    minHeight:  300,
     autoHideMenuBar: true,
     webPreferences: {
       experimentalFeatures: false,
