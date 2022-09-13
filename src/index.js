@@ -16,9 +16,9 @@ let process_state = 0;
 let mainWindow = null;
 app.on('ready', () => {
   let win_option = {
-    width    : 550,
+    width    : 400,
     height   : 500,
-    minWidth :  400,
+    minWidth :  200,
     minHeight:  300,
     autoHideMenuBar: true,
     webPreferences: {
@@ -34,6 +34,10 @@ app.on('ready', () => {
 
   // Electronに表示するhtmlを絶対パスで指定（相対パスだと動かない）
   mainWindow.loadURL(path.join("file:", __dirname, 'index.html'));
+
+  // jsonの内容をrendererに送信する
+  const config = JSON.parse(fs.readFileSync(json_file_path, "utf8"));
+  mainWindow.webContents.send("get_label_btn_name", config);
 
   // ChromiumのDevツールを開く
   // mainWindow.webContents.openDevTools();
@@ -54,9 +58,12 @@ ipcMain.handle("run_script", (e, arg) => {
   // JSONファイルを開く
   const config = JSON.parse(fs.readFileSync(json_file_path, "utf8"));
 
-  if (arg in config) { // コマンドが設定されていたらコマンドを実行
+  if (arg[0] in config && arg[1] in config[arg[0]]) { // コマンドが設定されていたらコマンドを実行
+    const label    = arg[0]; // label名
+    const btn_name = arg[1]; // ボタンテキスト
+
     // JSONからコマンドを取得
-    const cmd = config[`${arg}`].split(" ");  // コマンド文字列を取得し、スペースで分離しておく
+    const cmd = config[`${label}`][`${btn_name}`].split(" ");  // コマンド文字列を取得し、スペースで分離しておく
     // コマンド実行
     const cmd_first = cmd.shift();                        // spawn関数に合わせて、先頭のコマンドとそれ以外の要素を分離
     const child     = childProcess.spawn(cmd_first, cmd); // 実行
@@ -74,5 +81,6 @@ ipcMain.handle("run_script", (e, arg) => {
 
   } else { // コマンドが設定されていなかったらコマンドは実行されない(設定をしてくださいというメッセージを出す)
     console.log(`${arg} is not find in config.json. Please set you want to execute command.`)
+    process_state = 0;
   }
 })

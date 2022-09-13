@@ -1,1 +1,1 @@
-*{box-sizing:border-box;margin:0;padding:0}main{margin:1rem}.btn{margin-bottom:1rem;width:10rem;height:3rem}.row-title{margin-bottom:.5rem}.row{display:flex;margin-bottom:1rem}.row .col{margin-right:1rem}/*# sourceMappingURL=style.css.map */
+*{box-sizing:border-box;margin:0;padding:0}main{margin:1rem}.btn{margin-bottom:1rem;width:10rem;height:3rem}.row-title{margin-bottom:.5rem}.row{display:flex;flex-wrap:wrap;margin-bottom:1rem}.row .col{margin-right:1rem}/*# sourceMappingURL=style.css.map */
