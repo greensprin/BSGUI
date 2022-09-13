@@ -35,9 +35,11 @@ app.on('ready', () => {
   // Electronに表示するhtmlを絶対パスで指定（相対パスだと動かない）
   mainWindow.loadURL(path.join("file:", __dirname, 'index.html'));
 
-  // jsonの内容をrendererに送信する
-  const config = JSON.parse(fs.readFileSync(json_file_path, "utf8"));
-  mainWindow.webContents.send("get_label_btn_name", config);
+  mainWindow.webContents.on("did-finish-load", () => {
+    // jsonの内容をrendererに送信する
+    const config = JSON.parse(fs.readFileSync(json_file_path, "utf8"));
+    mainWindow.webContents.send("get_label_btn_name", config);
+  })
 
   // ChromiumのDevツールを開く
   // mainWindow.webContents.openDevTools();

@@ -32,10 +32,7 @@ window.api.on("get_label_btn_name", (event, config) => {
         container.appendChild(row_div);
         parent.appendChild(container);
     }
-})
 
-// ページ読み込まれた後にボタンの動作を設定する
-window.onload = function() {
     // ボタンクリック時の動作
     let btns = document.getElementsByClassName("run_script_btn");
     for (i = 0; i < btns.length; i++) {
@@ -48,4 +45,4 @@ window.onload = function() {
             const res = window.api.run_script([label, btn_name]);
         });
     }
-}
+})
