@@ -7,9 +7,8 @@ const BrowserWindow = electron.BrowserWindow;
 const path = require("path");
 const childProcess = require("child_process");
 const fs = require("fs");
+const log = require("electron-log");
 
-console.log(process.cwd()); // 実行したフォルダ場所
-console.log(__dirname);     // index.htmlが入っているフォルダ場所
 const json_file_path = "./setting/config.json";
 let process_state = 0;
 
@@ -51,9 +50,10 @@ app.on('ready', () => {
 
 ipcMain.handle("run_script", (e, arg) => {
   if (process_state === 1) {
-    console.log("other process is already running.");
+    console.log("[BSGUI MSG] other process is already running.");
     return;
   } else {
+    console.log("[BSGUI MSG] Process Start.")
     process_state = 1;
   }
 
@@ -61,6 +61,7 @@ ipcMain.handle("run_script", (e, arg) => {
   const config = JSON.parse(fs.readFileSync(json_file_path, "utf8"));
 
   if (arg[0] in config && arg[1] in config[arg[0]]) { // コマンドが設定されていたらコマンドを実行
+    let message = "";
     const label    = arg[0]; // label名
     const btn_name = arg[1]; // ボタンテキスト
 
@@ -72,17 +73,32 @@ ipcMain.handle("run_script", (e, arg) => {
 
     // 標準出力を表示
     child.stdout.on("data", (data) => {
-      console.log(data.toString());
+      process.stdout.write(data.toString());
+      message = [message, data.toString()].join("\n");
     })
     child.stderr.on("data", (data) => {
-      console.log(data.toString());
+      process.stdout.write(data.toString());
+      message = [message, data.toString()].join("\n");
     })
     child.on("close", (code) => {
+      console.log("[BSGUI MSG] Process End.")
+      writeLog(message, [label, btn_name].join("_"));
       process_state = 0;
     })
 
   } else { // コマンドが設定されていなかったらコマンドは実行されない(設定をしてくださいというメッセージを出す)
-    console.log(`${arg} is not find in config.json. Please set you want to execute command.`)
+    console.log(`[BSGUI MSG] ${arg} is not find in config.json. Please set you want to execute command.`)
     process_state = 0;
   }
 })
+
+function writeLog(message, basefilename) {
+  var today = new Date();
+  var year  = ('0000' + today.getFullYear()).slice(-4);
+  var month = ('00' + (today.getMonth()+1)).slice(-2);
+  var day   = ('00' + today.getDate()).slice(-2);
+  var fileName = `${year}${month}${day}_${basefilename}.log`;
+  log.transports.file.resolvePath = () => path.join(process.cwd(), `logs/${fileName}`);
+  log.transports.console.level = false;
+  log.info(message);
+}

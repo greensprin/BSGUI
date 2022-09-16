@@ -13,5 +13,12 @@
     "Optimizer": {
         "sample_script6": "ls",
         "sample_script7": "ls"
+    },
+
+    "other-tool": {
+        "sample_script8": "ls",
+        "sample_script9": "ls",
+        "sample_script10": "bash ./tool/sample_history.sh",
+        "sample_script11": "ls"
     }
 }
