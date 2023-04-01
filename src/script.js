@@ -45,4 +45,63 @@ window.api.on("get_label_btn_name", (event, config) => {
             const res = window.api.run_script([label, btn_name]);
         });
     }
+
+    // ボタン表示非表示のトグル動作
+    let title_text = document.getElementsByClassName("row-title");
+    for (i = 0; i < title_text.length; i++) {
+        title_text[i].addEventListener("click", function() {
+            const SHOW = 1;
+            const HIDE = 0;
+            col_elems = this.parentElement.getElementsByClassName("col");
+            btn_elems = this.parentElement.getElementsByClassName("run_script_btn");
+
+            this.classList.toggle("toggle-on")
+            if (this.classList.contains("toggle-on")) {
+                for (let i = 0; i < col_elems.length; i++) {
+                    col_elems[i].style.opacity = 1;
+                    col_elems[i].style.height  = "4rem"; // btn height = 3rem + btn margin-bottom = 1rem -> 4rem
+                }
+                for (let i = 0; i < btn_elems.length; i++) {
+                    btn_elems[i].style.opacity = 1;
+                    btn_elems[i].style.height  = "3rem";
+                    btn_elems[i].style.pointerEvents = "auto";
+                }
+            } else {
+                for (let i = 0; i < col_elems.length; i++) {
+                    col_elems[i].style.opacity = 0;
+                    col_elems[i].style.height  = 0;
+                }
+                for (let i = 0; i < btn_elems.length; i++) {
+                    btn_elems[i].style.opacity = 0;
+                    btn_elems[i].style.height  = 0;
+                    btn_elems[i].style.pointerEvents = "none";
+                }
+            }
+        })
+    }
+
+    // キーボードショートカット
+    document.addEventListener("keypress", keypress_event);
+    function keypress_event(e) {
+        let title_text = document.getElementsByClassName("row-title");
+        // Aを押したときは、すべてを表示する
+        if (e.code === "KeyA") {
+            for (let i = 0; i < title_text.length; i++) {
+                // 今非表示のものだけをクリックする -> 表示する
+                if (title_text[i].classList.contains("toggle-on") === false) {
+                    title_text[i].click();
+                }
+            }
+        }
+        // Cを押したときは、すべてを非表示にする
+        if (e.code === "KeyC") {
+            for (let i = 0; i < title_text.length; i++) {
+                // 今表示しているものだけをクリックする -> 非表示にする
+                if (title_text[i].classList.contains("toggle-on") === true) {
+                    title_text[i].click();
+                }
+            }
+        }
+        return false;
+    }
 })
