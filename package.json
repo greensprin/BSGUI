@@ -6,15 +6,23 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
-    "build:linux": "electron-builder --linux"
+    "build:linux": "electron-builder --linux",
+    "build:win": "electron-builder --win --x64"
   },
   "build": {
     "productName": "npm_test",
     "appId": "com.example.app",
+    "extraFiles": [
+      "tool",
+      "setting"
+    ],
     "linux": {
       "target": [
         "zip"
       ]
+    },
+    "win": {
+      "target": "zip"
     }
   },
   "keywords": [],
