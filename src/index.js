@@ -66,7 +66,8 @@ ipcMain.handle("run_script", (e, arg) => {
     const btn_name = arg[1]; // ボタンテキスト
 
     // JSONからコマンドを取得
-    const cmd = config[`${label}`][`${btn_name}`].split(" ");  // コマンド文字列を取得し、スペースで分離しておく
+    let cmd = config[`${label}`][`${btn_name}`].split(" ");  // コマンド文字列を取得し、スペースで分離しておく
+    cmd = cmd.filter(function(v) { return (v != ""); })      // コマンドから空白を削除
     // コマンド実行
     const cmd_first = cmd.shift();                        // spawn関数に合わせて、先頭のコマンドとそれ以外の要素を分離
     const child     = childProcess.spawn(cmd_first, cmd); // 実行

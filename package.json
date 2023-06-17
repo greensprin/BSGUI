@@ -10,7 +10,7 @@
     "build:win": "electron-builder --win --x64"
   },
   "build": {
-    "productName": "npm_test",
+    "productName": "bsgui",
     "appId": "com.example.app",
     "extraFiles": [
       "tool",
